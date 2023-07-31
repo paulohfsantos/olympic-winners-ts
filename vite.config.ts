@@ -1,7 +1,31 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { UserConfigExport, defineConfig } from 'vite'
+import { fileURLToPath, URL } from 'node:url'
+import react from '@vitejs/plugin-react'  
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-})
+export default () => {
+  const config: UserConfigExport = {
+    plugins: [
+      react(),
+    ],
+    define: {
+      'process.env': {
+        API_URL: process.env.VITE_API_URL,
+      }
+    },
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url))
+      },
+      extensions: [
+        '.js',
+        '.json',
+        '.jsx',
+        '.mjs',
+        '.ts',
+        '.tsx',
+      ],
+    },
+  }
+
+  return defineConfig(config)
+}

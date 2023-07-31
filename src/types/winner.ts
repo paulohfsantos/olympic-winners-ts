@@ -4,7 +4,7 @@ export interface Winner {
   country: string;
   year:    number;
   date:    Date;
-  sport:   Sport;
+  sport:   string;
   gold:    number;
   silver:  number;
   bronze:  number;

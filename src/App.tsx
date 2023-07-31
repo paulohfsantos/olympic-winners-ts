@@ -1,12 +1,11 @@
+import { WinnersPage } from './components/WinnersPage';
 import './App.css'
 
 function App() {
   return (
-    <>
-      <div className="App">
-        teste
-      </div>
-    </>
+    <div>
+      <WinnersPage />
+    </div>
   )
 }
 
