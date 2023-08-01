@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface TableProps<T> {
   data: T[];
@@ -11,6 +11,7 @@ export function TableWithPagination<T extends {}>({
 }: TableProps<T>) {
   const [currentPage, setCurrentPage] = useState(0);
   const pages = Math.ceil(data.length / rowsPerPage);
+  const [jumpToPage, setJumpToPage] = useState(currentPage + 1);
 
   const handlePrevious = () => {
     if (currentPage > 0) {
@@ -26,7 +27,7 @@ export function TableWithPagination<T extends {}>({
 
   const currentData = data.slice(
     currentPage * rowsPerPage,
-    (currentPage + 1) * rowsPerPage
+    (currentPage + 1) * rowsPerPage,
   );
 
   function parseValue(value: unknown) {
@@ -45,14 +46,30 @@ export function TableWithPagination<T extends {}>({
     return "";
   }
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      const value = Number(jumpToPage);
+
+      if (value > 0 && value <= pages) {
+        console.log("jumping", value);
+        setCurrentPage(value - 1);
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [jumpToPage]);
+
   return (
     <div>
-      <table className="min-w-full bg-gray-700 text-white">
+      <table className="min-w-full bg-slate-900 text-white">
         <thead>
           <tr>
             {data.length > 0 &&
               Object.keys(data[0]).map((key) => (
-                <th key={key} className="py-2 px-4 capitalize border">
+                <th
+                  key={key}
+                  className="border border-blue-700 px-4 py-2 capitalize"
+                >
                   {key}
                 </th>
               ))}
@@ -63,7 +80,10 @@ export function TableWithPagination<T extends {}>({
             currentData.map((winner, rowIndex) => (
               <tr key={rowIndex}>
                 {Object.values(winner).map((value, valueIndex) => (
-                  <td key={valueIndex} className="py-2 w-auto px-4 border">
+                  <td
+                    key={valueIndex}
+                    className="w-auto border border-blue-700 px-4 py-2"
+                  >
                     {parseValue(value)}
                   </td>
                 ))}
@@ -75,19 +95,31 @@ export function TableWithPagination<T extends {}>({
         <button
           onClick={handlePrevious}
           disabled={currentPage === 0}
-          className="rounded-md py-2 px-4 bg-gray-700 text-white"
+          className="rounded-md bg-gray-700 px-4 py-2 text-white "
         >
-          Previous
+          {"<"} Previous
         </button>
-        <span>
-          {currentPage + 1} of {pages}
+        <span className="rounded-md bg-slate-700 px-4 py-2">
+          <input
+            type="text"
+            className="mr-2 w-24 rounded bg-slate-800 px-4 py-2 text-center text-blue-200"
+            value={jumpToPage}
+            onInput={(e) =>
+              setJumpToPage(
+                +e.currentTarget.value.toString().replaceAll("0", ""),
+              )
+            }
+            min={1}
+            max={pages}
+          />
+          of {pages}
         </span>
         <button
           onClick={handleNext}
           disabled={currentPage === pages - 1}
-          className="rounded-md py-2 px-4 bg-gray-700 text-white"
+          className="rounded-md bg-gray-700 px-4 py-2 text-white"
         >
-          Next
+          Next {">"}
         </button>
       </div>
     </div>
