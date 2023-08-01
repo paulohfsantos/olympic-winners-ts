@@ -43,7 +43,7 @@ export const TableWithPagination: React.FC<TableProps> = ({ data, rowsPerPage = 
           {currentData && currentData.map((winner, rowIndex) => (
             <tr key={rowIndex}>
               {Object.values(winner).map((value, valueIndex) => (
-                <td key={valueIndex} className="py-2 px-4 border">
+                <td key={valueIndex} className="py-2 w-auto px-4 border">
                   {value instanceof Date ? value.toLocaleDateString() : value}
                 </td>
               ))}
