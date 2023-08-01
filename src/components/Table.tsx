@@ -51,7 +51,6 @@ export function TableWithPagination<T extends {}>({
       const value = Number(jumpToPage);
 
       if (value > 0 && value <= pages) {
-        console.log("jumping", value);
         setCurrentPage(value - 1);
       }
     }, 500);
