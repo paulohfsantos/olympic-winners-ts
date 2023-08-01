@@ -32,11 +32,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      # - name: Install pnpm
+      #   run: npm install -g pnpm
 
       - name: Install Vercel CLI
         run: npm install -g vercel
 
       - name: Deploy
-        run: vercel --token ${{ secrets.VERCEL_GH_TOKEN }} --prod
+        run: vercel --token ${{ secrets.VERCEL_GH_TOKEN }} --confirm --prod
