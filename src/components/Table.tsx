@@ -1,74 +1,114 @@
-import React, { useState } from "react";
-import type { Winner } from "../types/winner";
+import { useEffect, useState } from "react";
 
-interface TableProps {
-  data: Winner[];
+interface TableProps<T> {
+  data: T[];
   rowsPerPage?: number;
 }
 
-export const TableWithPagination: React.FC<TableProps> = ({ data, rowsPerPage = 5 }) => {
+export function TableWithPagination<T extends {}>({
+  data,
+  rowsPerPage = 5,
+}: TableProps<T>) {
   const [currentPage, setCurrentPage] = useState(0);
   const pages = Math.ceil(data.length / rowsPerPage);
+  const [jumpToPage, setJumpToPage] = useState(currentPage + 1);
 
   const handlePrevious = () => {
     if (currentPage > 0) {
-      setCurrentPage(prev => prev - 1);
+      setCurrentPage((prev) => prev - 1);
     }
   };
 
   const handleNext = () => {
     if (currentPage < pages - 1) {
-      setCurrentPage(prev => prev + 1);
+      setCurrentPage((prev) => prev + 1);
     }
   };
 
   const currentData = data.slice(
     currentPage * rowsPerPage,
-    (currentPage + 1) * rowsPerPage
+    (currentPage + 1) * rowsPerPage,
   );
+
+  function parseValue(value: unknown) {
+    if (typeof value === "string" || typeof value === "number") {
+      return value;
+    } else if (value instanceof Date) {
+      return value.toLocaleDateString();
+    }
+  }
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      const value = Number(jumpToPage);
+
+      if (value > 0 && value <= pages) {
+        setCurrentPage(value - 1);
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [jumpToPage]);
 
   return (
     <div>
-      <table className="min-w-full bg-gray-700 text-white">
+      <table className="min-w-full bg-slate-900 text-white">
         <thead>
           <tr>
-            {data.length > 0 && Object.keys(data[0]).map(key => (
-              <th key={key} className="py-2 px-4 capitalize border">
-                {key}
-              </th>
-            ))}
+            {data.length > 0 &&
+              Object.keys(data[0]).map((key) => (
+                <th
+                  key={key}
+                  className="border border-blue-700 px-4 py-2 capitalize"
+                >
+                  {key}
+                </th>
+              ))}
           </tr>
         </thead>
         <tbody>
-          {currentData && currentData.map((winner, rowIndex) => (
-            <tr key={rowIndex}>
-              {Object.values(winner).map((value, valueIndex) => (
-                <td key={valueIndex} className="py-2 w-auto px-4 border">
-                  {value instanceof Date ? value.toLocaleDateString() : value}
-                </td>
-              ))}
-            </tr>
-          ))}
+          {currentData &&
+            currentData.map((winner, rowIndex) => (
+              <tr key={rowIndex}>
+                {Object.values(winner).map((value, valueIndex) => (
+                  <td
+                    key={valueIndex}
+                    className="w-auto border border-blue-700 px-4 py-2"
+                  >
+                    {parseValue(value)}
+                  </td>
+                ))}
+              </tr>
+            ))}
         </tbody>
       </table>
       <div className="mt-4 flex justify-between">
         <button
           onClick={handlePrevious}
           disabled={currentPage === 0}
-          className="rounded-md py-2 px-4 bg-gray-700 text-white"
+          className="rounded-md bg-gray-700 px-4 py-2 text-white transition-all hover:bg-blue-950"
         >
-          Previous
+          {"<"} Previous
         </button>
-        <span>{currentPage + 1} of {pages}</span>
+        <span className="rounded-md bg-slate-700 px-4 py-2">
+          <input
+            type="text"
+            className="mr-2 w-24 rounded bg-slate-800 px-4 py-2 text-center text-blue-200"
+            value={jumpToPage}
+            onInput={(e) => setJumpToPage(+e.currentTarget.value)}
+            min={1}
+            max={pages}
+          />
+          of {pages}
+        </span>
         <button
           onClick={handleNext}
           disabled={currentPage === pages - 1}
-          className="rounded-md py-2 px-4 bg-gray-700 text-white"
+          className="rounded-md bg-gray-700 px-4 py-2 text-white transition-all hover:bg-blue-950"
         >
-          Next
+          Next {">"}
         </button>
       </div>
     </div>
   );
-};
-
+}

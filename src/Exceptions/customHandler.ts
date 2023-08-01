@@ -1,7 +1,7 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 export class CustomHandler {
-  handleError(error: Error): void {
+  handleError(error: Error) {
     toast.error(error.message);
   }
 

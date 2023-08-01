@@ -1,12 +1,12 @@
-import { WinnersPage } from './components/WinnersPage';
-import './App.css'
+import "./App.css";
+import { WinnersPage } from "./pages/Winners";
 
 function App() {
   return (
     <div>
       <WinnersPage />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

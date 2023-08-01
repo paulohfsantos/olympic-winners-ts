@@ -3,7 +3,7 @@ import type { FC, PropsWithChildren } from "react";
 import { WinnersContext } from "./winners.context";
 import { Winner } from "../types/winner";
 import { WinnerService } from "../service/winners";
-import { ResponseException } from "../Exceptions/responseException";
+import { ResponseException } from "../exceptions/responseException";
 
 const initialState: Winner[] = [];
 const winnerService = new WinnerService();
@@ -16,10 +16,14 @@ export const WinnersProvider: FC<PropsWithChildren> = ({ children }) => {
     try {
       const res = await winnerService.getWinners();
       setWinners(res);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       winnerException.handleResponse(error.response.status);
     }
+  };
+
+  const value = {
+    winners,
+    setWinners,
   };
 
   useEffect(() => {
@@ -27,8 +31,6 @@ export const WinnersProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   return (
-    <WinnersContext.Provider value={{ winners, setWinners }}>
-      {children}
-    </WinnersContext.Provider>
+    <WinnersContext.Provider value={value}>{children}</WinnersContext.Provider>
   );
 };
