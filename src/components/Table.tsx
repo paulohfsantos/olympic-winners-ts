@@ -31,19 +31,11 @@ export function TableWithPagination<T extends {}>({
   );
 
   function parseValue(value: unknown) {
-    if (typeof value === "string") {
+    if (typeof value === "string" || typeof value === "number") {
       return value;
-    }
-
-    if (typeof value === "number") {
-      return value;
-    }
-
-    if (value instanceof Date) {
+    } else if (value instanceof Date) {
       return value.toLocaleDateString();
     }
-
-    return "";
   }
 
   useEffect(() => {
