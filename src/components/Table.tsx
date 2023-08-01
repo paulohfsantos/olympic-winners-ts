@@ -8,7 +8,6 @@ interface TableProps {
 
 export const TableWithPagination: React.FC<TableProps> = ({ data, rowsPerPage = 5 }) => {
   const [currentPage, setCurrentPage] = useState(0);
-
   const pages = Math.ceil(data.length / rowsPerPage);
 
   const handlePrevious = () => {
@@ -30,11 +29,11 @@ export const TableWithPagination: React.FC<TableProps> = ({ data, rowsPerPage = 
 
   return (
     <div>
-      <table className="min-w-full bg-white text-blue-700">
+      <table className="min-w-full bg-gray-700 text-white">
         <thead>
           <tr>
             {data.length > 0 && Object.keys(data[0]).map(key => (
-              <th key={key} className="py-2 px-4 border capitalize">
+              <th key={key} className="py-2 px-4 capitalize border">
                 {key}
               </th>
             ))}
@@ -53,11 +52,19 @@ export const TableWithPagination: React.FC<TableProps> = ({ data, rowsPerPage = 
         </tbody>
       </table>
       <div className="mt-4 flex justify-between">
-        <button onClick={handlePrevious} disabled={currentPage === 0} className="py-2 px-4 bg-blue-500 text-white">
+        <button
+          onClick={handlePrevious}
+          disabled={currentPage === 0}
+          className="rounded-md py-2 px-4 bg-gray-700 text-white"
+        >
           Previous
         </button>
         <span>{currentPage + 1} of {pages}</span>
-        <button onClick={handleNext} disabled={currentPage === pages - 1} className="py-2 px-4 bg-blue-500 text-white">
+        <button
+          onClick={handleNext}
+          disabled={currentPage === pages - 1}
+          className="rounded-md py-2 px-4 bg-gray-700 text-white"
+        >
           Next
         </button>
       </div>
