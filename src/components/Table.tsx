@@ -95,7 +95,7 @@ export function TableWithPagination<T extends {}>({
         <button
           onClick={handlePrevious}
           disabled={currentPage === 0}
-          className="rounded-md bg-gray-700 px-4 py-2 text-white "
+          className="rounded-md bg-gray-700 px-4 py-2 text-white transition-all hover:bg-blue-950"
         >
           {"<"} Previous
         </button>
@@ -104,11 +104,7 @@ export function TableWithPagination<T extends {}>({
             type="text"
             className="mr-2 w-24 rounded bg-slate-800 px-4 py-2 text-center text-blue-200"
             value={jumpToPage}
-            onInput={(e) =>
-              setJumpToPage(
-                +e.currentTarget.value.toString().replaceAll("0", ""),
-              )
-            }
+            onInput={(e) => setJumpToPage(+e.currentTarget.value)}
             min={1}
             max={pages}
           />
@@ -117,7 +113,7 @@ export function TableWithPagination<T extends {}>({
         <button
           onClick={handleNext}
           disabled={currentPage === pages - 1}
-          className="rounded-md bg-gray-700 px-4 py-2 text-white"
+          className="rounded-md bg-gray-700 px-4 py-2 text-white transition-all hover:bg-blue-950"
         >
           Next {">"}
         </button>

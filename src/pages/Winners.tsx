@@ -6,7 +6,7 @@ export const WinnersPage = () => {
 
   return (
     <div>
-      <header className="py-5 font-bold text-gray-300 text-3xl">
+      <header className="py-5 text-3xl font-bold text-gray-300">
         Olympic Winners
       </header>
       <TableWithPagination data={winners} rowsPerPage={15} />
