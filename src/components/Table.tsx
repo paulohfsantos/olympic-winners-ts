@@ -5,7 +5,7 @@ interface TableProps<T> {
   rowsPerPage?: number;
 }
 
-export function TableWithPagination<T extends {}>({
+export function TableWithPagination<T extends NonNullable<unknown>>({
   data,
   rowsPerPage = 5,
 }: TableProps<T>) {
@@ -16,12 +16,14 @@ export function TableWithPagination<T extends {}>({
   const handlePrevious = () => {
     if (currentPage > 0) {
       setCurrentPage((prev) => prev - 1);
+      setJumpToPage(currentPage);
     }
   };
 
   const handleNext = () => {
     if (currentPage < pages - 1) {
       setCurrentPage((prev) => prev + 1);
+      setJumpToPage(currentPage + 2);
     }
   };
 
