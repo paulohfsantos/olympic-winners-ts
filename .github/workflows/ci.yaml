@@ -30,13 +30,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
-      # - name: Install pnpm
-      #   run: npm install -g pnpm
+        uses: actions/checkout@v3
 
       - name: Install Vercel CLI
-        run: npm install -g vercel
+        run: npm install -g vercel@latest
 
       - name: Deploy
-        run: vercel --token ${{ secrets.VERCEL_GH_TOKEN }} --confirm --prod
+        run: vercel --token ${{ secrets.VERCEL_GH_TOKEN }} --yes --prod

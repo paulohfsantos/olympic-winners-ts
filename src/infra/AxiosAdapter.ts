@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ResponseException } from "../exceptions/responseException";
+import { ResponseException } from "../Exceptions/responseException";
 
 export class AxiosAdapter {
   private exception = new ResponseException();
